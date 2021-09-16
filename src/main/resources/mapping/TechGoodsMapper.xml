@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.tech_wuliao.mapper.TechGoodsMapper">
+
+
+
+    <resultMap id="BaseResultMap" type="com.example.tech_wuliao.entity.TechGoods">
+        <result column="工厂" jdbcType="INTEGER" property="factory" />
+        <result column="物料" jdbcType="VARCHAR" property="wuliao" />
+        <result column="物料描述" jdbcType="DOUBLE" property="picture" />
+        <result column="图号" jdbcType="DOUBLE" property="description" />
+        <result column="组件" jdbcType="DOUBLE" property="content" />
+        <result column="组件描述" jdbcType="DOUBLE" property="contentDesc" />
+        <result column="采购类型" jdbcType="DOUBLE" property="buy" />
+    </resultMap>
+
+    <!--查询物料信息-->
+    <select id="get" resultMap="BaseResultMap" parameterType="String">
+            SELECT TOP 1000
+            t1.[工厂]
+            ,[物料],t2.物料描述,t2.[图号]
+            ,[组件],isnull(t3.物料描述,t4.物料描述)  as 组件描述,t3.[采购类型]
+                    FROM [SAP20200806].[dbo].[tbBOM] t1
+                        left join [SAP20200806].[dbo].[t_icitem] t2 on t1.[物料]=t2.[物料号码] and t2.[工厂]=8020
+                        left join [SAP20200806].[dbo].[t_icitem] t3 on t1.[组件]=t3.[物料号码] and t3.[工厂]=8020
+                        left join [SAP20200806].[dbo].[t_icitem] t4 on t1.[组件]=t4.[物料号码] and t4.[工厂]=8000
+                    where t1.[工厂]=8020
+                    and t1.物料='${wuliaoNum}'
+    </select>
+
+
+</mapper>
